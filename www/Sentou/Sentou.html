@@ -1,0 +1,232 @@
+<ons-page id="pageSentou">
+    <ons-tabbar id="tabSentou">
+        <ons-tab label="対空" page="Sentou_AA.html" persistent></ons-tab><!-- Anti-Air -->
+        <ons-tab label="昼戦" page="Sentou_OF.html" persistent></ons-tab><!-- Observed Fire/観測射撃 -->
+        <ons-tab label="夜戦" page="Sentou_NC.html" persistent></ons-tab><!-- Night Combat -->
+    </ons-tabbar>
+
+    <ons-template id="Sentou_AA.html">
+        <ons-page id="pageSentou_AA">
+            <ons-toolbar>
+                <div class="left">
+                    <ons-back-button class="backtoMain">戻る</ons-back-button></div>
+                <div class="center">対空カットイン</div>
+                <div class="right"></div>
+            </ons-toolbar>
+        
+            <div style="text-align: center;">
+                <ons-scroller>
+                    <ons-list>
+                        <div class="Sentou_AA_origin">
+                            <ons-list-header class="Sentou_AA_Header">
+                                <ons-row align="center">
+                                    <ons-col>
+                                        <div class="Sentou_Headercss Sentou_AA_Type">
+                                            艦種・艦名
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="30%">
+                                        <div class="Sentou_Headercss">
+                                            撃墜数
+                                        </div>
+                                    </ons-col>
+                                </ons-row>
+                            </ons-list-header>
+            
+                            <ons-list-item class="Sentou_AA_List">
+                                <ons-row align="center">
+                                    <ons-col>
+                                        <div class="Sentou_AA_Equipment">
+                                            -
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="30%">
+                                        <div class="Sentou_AA_ShootDown">
+                                            -
+                                        </div>
+                                    </ons-col>
+                                </ons-row>
+                            </ons-list-item>
+                        </div>
+        
+                        <div class="Sentou_AA_Clone">
+        
+                        </div>
+                    </ons-list>
+                </ons-scroller>
+            </div>
+        </ons-page>
+    </ons-template>
+
+    <ons-template id="Sentou_OF.html">
+        <ons-page id="pageSentou_OF">
+    <ons-toolbar>
+                <div class="left">
+                    <ons-back-button class="backtoMain">戻る</ons-back-button></div>
+                <div class="center">弾着観測射撃</div>
+                <div class="right"></div>
+            </ons-toolbar>
+        
+            <div style="text-align: center;">
+                <ons-scroller>
+                    <ons-list>
+                        <div class="Sentou_OF_origin">
+                            <ons-list-header class="Sentou_OF_Header">
+                                <ons-row align="center">
+                                    <ons-col width="30％">
+                                        <div class="Sentou_Headercss Sentou_OF_Type">
+                                            攻撃の種類
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="12.5%">
+                                        <div class="Sentou_Headercss">
+                                            主砲
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="12.5%">
+                                        <div class="Sentou_Headercss">
+                                            副砲
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="12.5%">
+                                        <div class="Sentou_Headercss">
+                                            徹甲
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="12.5%">
+                                        <div class="Sentou_Headercss">
+                                            電探
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="20%">
+                                        <div class="Sentou_Headercss">
+                                            倍率
+                                        </div>
+                                    </ons-col>
+                                </ons-row>
+                            </ons-list-header>
+            
+                            <ons-list-item class="Sentou_OF_List">
+                                <ons-row align="center">
+                                    <ons-col width="30%">
+                                        <div class="Sentou_OF_Empty"></div>
+                                    </ons-col>
+                                    <ons-col width="12.5%">
+                                        <div class="Sentou_OF_EquipmentA">
+                                            -
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="12.5%">
+                                        <div class="Sentou_OF_EquipmentB">
+                                            -
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="12.5%">
+                                        <div class="Sentou_OF_EquipmentC">
+                                            -
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="12.5%">
+                                        <div class="Sentou_OF_EquipmentD">
+                                            -
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="20%">
+                                        <div class="Sentou_OF_Correction">
+                                            -
+                                        </div>
+                                    </ons-col>
+                                </ons-row>
+                            </ons-list-item>
+                        </div>
+        
+                        <div class="Sentou_OF_Clone">
+        
+                        </div>
+                    </ons-list>
+                </ons-scroller>
+            </div>
+        </ons-page>
+    </ons-template>
+
+    <ons-template id="Sentou_NC.html">
+        <ons-page id="pageSentou_NC">
+    <ons-toolbar>
+                <div class="left">
+                    <ons-back-button class="backtoMain">戻る</ons-back-button></div>
+                <div class="center">夜間特殊攻撃</div>
+                <div class="right"></div>
+            </ons-toolbar>
+        
+            <div style="text-align: center;">
+                <ons-scroller>
+                    <ons-list>
+                        <div class="Sentou_NC_origin">
+                            <ons-list-header class="Sentou_NC_Header">
+                                <ons-row align="center">
+                                    <ons-col>
+                                        <div class="Sentou_Headercss Sentou_NC_Type">
+                                            攻撃の種類
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="16.6%">
+                                        <div class="Sentou_Headercss">
+                                            主砲
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="16.6%">
+                                        <div class="Sentou_Headercss">
+                                            副砲
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="16.6%">
+                                        <div class="Sentou_Headercss">
+                                            魚雷
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="20%">
+                                        <div class="Sentou_Headercss">
+                                            倍率
+                                        </div>
+                                    </ons-col>
+                                </ons-row>
+                            </ons-list-header>
+            
+                            <ons-list-item class="Sentou_NC_List">
+                                <ons-row align="center">
+                                    <ons-col>
+                                        <div class="Sentou_NC_Empty"></div>
+                                    </ons-col>
+                                    <ons-col width="16.6%">
+                                        <div class="Sentou_NC_EquipmentA">
+                                            -
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="16.6%">
+                                        <div class="Sentou_NC_EquipmentB">
+                                            -
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="16.6%">
+                                        <div class="Sentou_NC_EquipmentC">
+                                            -
+                                        </div>
+                                    </ons-col>
+                                    <ons-col width="20%">
+                                        <div class="Sentou_NC_Correction">
+                                            -
+                                        </div>
+                                    </ons-col>
+                                </ons-row>
+                            </ons-list-item>
+                        </div>
+        
+                        <div class="Sentou_NC_Clone">
+        
+                        </div>
+                    </ons-list>
+                </ons-scroller>
+            </div>
+        </ons-page>
+    </ons-template>
+</ons-page>

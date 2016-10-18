@@ -1,0 +1,31 @@
+<ons-page id="pageMain">
+    <ons-toolbar>
+        <div class="left"></div>
+        <div class="center">KNCL。</div>
+        <div class="right"></div>
+    </ons-toolbar>
+
+    <div style="text-align: center;">
+        <ons-scroller>
+            <ons-list>
+                <ons-list-header>メインメニュー</ons-list-header>
+
+                <ons-list-item id="gotoKansaiki" modifier="chevron"
+                 onclick="KNCLnavigator.pushPage('Kansaiki/Kansaiki.html', {animation: 'slide'});">
+                    艦隊制空値</ons-list-item>
+                <ons-list-item id="gotoEnsei" modifier="chevron"
+                 onclick="KNCLnavigator.pushPage('Ensei/Ensei.html', {animation: 'slide'});">
+                    遠征早見表</ons-list-item>
+                <ons-list-item id="gotoKaishu" modifier="chevron"
+                 onclick="KNCLnavigator.pushPage('Kaishu/Kaishu.html', {animation: 'slide'});">
+                    改修工廠</ons-list-item>
+                <ons-list-item id="gotoSentou" modifier="chevron"
+                 onclick="KNCLnavigator.pushPage('Sentou/Sentou.html', {animation: 'slide'});">
+                    カットイン&連撃</ons-list-item>
+                <ons-list-item id="gotoAck" modifier="chevron"
+                 onclick="KNCLnavigator.pushPage('Ack/Ack.html', {animation: 'slide'});">
+                    謝辞</ons-list-item>
+            </ons-list>
+        </ons-scroller>
+    </div>
+</ons-page>
