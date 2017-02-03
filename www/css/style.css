@@ -5,11 +5,15 @@
 }
 
 /* 艦載機ページ用やで */
+[id^=putKanmusu]
+{
+    line-height: 250%;
+}
 [class^=setKanmusuType_], [class^=setKansaikiType_]
 {
     text-indent: 0.5em;
 }
-[class^=setKanmusu_], [class^=setKansaiki_]
+[class^=setKanmusuName_], [class^=setKansaiki_]
 {
     text-indent: 1.0em;
 }
