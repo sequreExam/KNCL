@@ -13,174 +13,149 @@ function func_pageKaishu()
     //prechange時に発火
     tabKaishu.addEventListener("prechange", function()
     {
-        console.log(" tabKaishu:prechange");
+        //console.log(" tabKaishu:prechange");
     }, false);
 
     //postchange時に発火
     tabKaishu.addEventListener("postchange", function()
     {
-        console.log(" tabKaishu:postchange");
+        //console.log(" tabKaishu:postchange");
     }, false);
 
     //reactive時に発火
     tabKaishu.addEventListener("reactive", function()
     {
-        console.log(" tabKaishu:reactive");
+        //console.log(" tabKaishu:reactive");
     }, false);
 
-    //tabKaishu.loadPage("Kaishu_" + arrayDayId[indexDate] + ".html");
     tabKaishu.setActiveTab(indexDate);
     return indexDate;
 }
 
 function func_pageKaishuDay(indexDate)
 {
-    var i, j, k, elm_i, elm_j, day;
-    var loadingDayIndex, loadingIdIndex;
+    var day, loadingDayIndex, loadingIdIndex;
 
-    var targetNibankan;
-    var tmpNibankanText = "";
+    var DOM ="";
 
-    var targetKaishuHeader;
-    var targetKaishuSoubi;
-    var targetKaishuNibankan;
+    //ons-list-header用
+    var i;
+    var elm_i = arrayKaishu["リスト"]["分類"];
+    var elm_i_Length = elm_i.length;
+    var DOMListHeader;
+
+    //ons-list-item用
+    var j;
+    var elm_j;
+    var elm_j_Length;
+    var DOMListItem;
+
+    var DOMOnsListItem = "onclick='func_DialogKaishu(this);' modifier='tappable'";
+    var DOMOnsRow = "vertical-align='center'";
+    var DOMOnsColWidth = "width='75%'";
+    var DOMDivClass = ["class='Kaishu_Soubi'", "class='Kaishu_Nibankan'"];
+
+    var k, targetNibankan, targetNibankan_Length, tmpNibankanText;
 
     //ここから改修ページコンテンツのロード
-    for(day = 0; day < arrayDayId.length; day++)
+    for(day = 0; day < arrayDayId_Length; day++)
     {
         //今日の曜日のページを一番に更新したい
         loadingDayIndex = (day + indexDate) % 7;
         loadingIdIndex = "#pageKaishu_" + arrayDayId[loadingDayIndex];
-        console.log("  loading... " + loadingIdIndex);
+        //console.log("  loading... " + loadingIdIndex);
 
-        //ページ上部の表示を曜日ごとに変える
-        $(loadingIdIndex + " ons-toolbar .center").text("改修工廠" + "(" + arrayDay[loadingDayIndex] + ")");
+        //追加するDOMをリセット
+        DOM = "";
 
-        $.each(arrayKaishu["リスト"]["分類"], function(i, elm_i)
+        //武器種の数だけ繰り返し
+        for(i = 0; i < elm_i_Length; i++)
         {
-            //console.log(i + ":" + elm_i);
+            DOMListHeader = generateDOM("ons-list-header", "start");
+                DOMListHeader += elm_i[i];
+            DOMListHeader += generateDOM("ons-list-header", "end");
 
-            //#Kaishu_Typeに通し番号を追加して.Ensei_Cloneに追加する
-            $(loadingIdIndex + " .Kaishu_Origin .Kaishu_Type").clone(true)
-                .removeClass("Kaishu_Type")
-                .addClass("Kaishu_Type" + i)
-                .appendTo(loadingIdIndex + " .Kaishu_Clone");
-            //ons-list-headerに装備種別を挿入する
-            $(loadingIdIndex + " .Kaishu_Origin .Kaishu_Header").clone(true)
-                .removeClass("Kaishu_Header")
-                .addClass("Kaishu_Header" + i)
-                .appendTo(loadingIdIndex + " .Kaishu_Type" + i);
+            DOM += DOMListHeader;
 
-            targetKaishuHeader = loadingIdIndex + " .Kaishu_Header" + i + " > .Kaishu_Headercss";
-            $(targetKaishuHeader).html(elm_i);
-
-            $.each(arrayKaishu["リスト"]["装備名"][elm_i], function(j, elm_j)
+            //その武器種の武器の数だけ繰り返し
+            elm_j = arrayKaishu["リスト"]["装備名"][elm_i[i]];
+            elm_j_Length = elm_j.length;
+            for(j = 0; j < elm_j_Length; j++)
             {
-                targetNibankan = arrayKaishu[elm_i][elm_j][arrayDay[loadingDayIndex]];
-                //console.log(" " + j + ":" + elm_j);
-                //console.log(" " + j + ":" + targetNibankan);
-
+                targetNibankan = arrayKaishu[elm_i[i]][elm_j[j]][arrayDay[loadingDayIndex]];
+                targetNibankan_Length = targetNibankan.length;
                 if(targetNibankan != -1)
                 {
-                    //#Kaishu_Listに通し番号を追加して.Ensei_Cloneに追加する
-                    $(loadingIdIndex + " .Kaishu_Origin .Kaishu_List").clone(true)
-                        .removeClass("Kaishu_List")
-                        .addClass("Kaishu_List" + j)
-                        .appendTo(loadingIdIndex + " .Kaishu_Type" + i);
-                    //遠征名、旗艦Lv、最小隻数、必要艦種を挿入する
-                    targetKaishuSoubi = loadingIdIndex + " .Kaishu_Type" + i + " > .Kaishu_List" + j + " .Kaishu_Soubi";
-                    $(targetKaishuSoubi).html(elm_j);
-                    //arrayKaishu["小口径主砲"]["12.7cm連装砲"]["月"] = "-"
-                    if(targetNibankan.length > 1)
+                    if(targetNibankan_Length > 1)
                     {
-                        for(k = 0, tmpNibankanText = ""; k < targetNibankan.length; k++)
+                        for(k = 0, tmpNibankanText = ""; k < targetNibankan_Length; k++)
                         {
                             tmpNibankanText += targetNibankan[k];
-                            if(k < targetNibankan.length)
+                            if(k < targetNibankan_Length)
                             {
                                 tmpNibankanText += "<br />";
                             }
                         }
                         //console.log(tmpNibankanText);
-                        targetKaishuNibankan = loadingIdIndex + " .Kaishu_Type" + i + " > .Kaishu_List" + j + " .Kaishu_Nibankan";
-                        $(targetKaishuNibankan).html(tmpNibankanText);
                     }
                     else
                     {
-                        targetKaishuNibankan = loadingIdIndex + " .Kaishu_Type" + i + " > .Kaishu_List" + j + " .Kaishu_Nibankan";
-                        $(targetKaishuNibankan).html(targetNibankan);
+                        tmpNibankanText = targetNibankan;
                     }
+                    DOMListItem = generateDOM("ons-list-item", "start", DOMOnsListItem);
+                        DOMListItem += generateDOM("ons-row", "start", DOMOnsRow);
+                            DOMListItem += generateDOM("ons-col", "start", DOMOnsColWidth);
+                                DOMListItem += generateDOM("div", "start", DOMDivClass[0]);
+                                    DOMListItem += elm_j[j];
+                                DOMListItem += generateDOM("div", "end");
+                            DOMListItem += generateDOM("ons-col", "end");
+                            DOMListItem += generateDOM("ons-col", "start");
+                                DOMListItem += generateDOM("div", "start", DOMDivClass[1]);
+                                    DOMListItem += tmpNibankanText;
+                                DOMListItem += generateDOM("div", "end");
+                            DOMListItem += generateDOM("ons-col", "end");
+                        DOMListItem += generateDOM("ons-row", "end");
+                    DOMListItem += generateDOM("ons-list-item", "end");
+
+                    DOM += DOMListItem;
                 }
-            });
-        });
-        $(loadingIdIndex + " .Kaishu_Origin").remove();
-    }
-}
-/*
-if($(loadingIdIndex + " .Kaishu_Origin .Kaishu_List")[0]){
-}else{console.log("   doesntExist:" + loadingIdIndex + " .Kaishu_Origin .Kaishu_List");}
-*/
-
-function func_DialogKaishu(obj)
-{
-    var i, elm_i, j, ifCount = 0;
-    var sourceLiteral, sourceIndex;
-    var tmpKaishuName = $(obj).find(".Kaishu_Soubi").text();
-    var tmpKaishuNibankan = $(obj).find(".Kaishu_Nibankan").html();
-    console.log("$(obj).find(\".Kaishu_Nibankan\").html():" + tmpKaishuNibankan);
-    tmpKaishuNibankan = tmpKaishuNibankan.split("<br>");
-    var tmpKaishuNibankanlength = tmpKaishuNibankan.length;
-    var indexdate = (new Date().getDay() + 6) % 7;
-
-    console.log("$(obj).find(\".Kaishu_Soubi\").text():" + tmpKaishuName);
-    console.log("$(obj).find(\".Kaishu_Nibankan\").html():" + tmpKaishuNibankan);
-
-    $.each(arrayKaishu["リスト"]["装備名"], function(i, elm_i)
-    {
-        //console.log(i + ", " + elm_i + $.inArray(tmpKaishuName, elm_i));
-
-        if($.inArray(tmpKaishuName, elm_i) != -1)
-        {
-            sourceIndex = i;
-            sourceLiteral = arrayKaishu[sourceIndex][tmpKaishuName][arrayDay[indexdate]];
-            for(j = 0; j < tmpKaishuNibankanlength; j++)
-            {
-                if($.inArray(tmpKaishuNibankan[j], sourceLiteral) != -1)
-                {
-                    console.log("tmpKaishuNibankan[" + j + "]:" +  tmpKaishuNibankan[j] + "== sourceLiteral[" + j + "]:" + sourceLiteral);
-                    ifCount++;
-                }
-                
-            }
-            console.log(ifCount + ":" + tmpKaishuNibankanlength);
-            //return false になるとこの$.each()ループを中断する
-            if(ifCount == tmpKaishuNibankanlength)
-            {
-                sourceLiteral = arrayKaishu[sourceIndex][tmpKaishuName];
-                return false;
             }
         }
-    });
+        $("#Kaishu_" + arrayDayId[loadingDayIndex] + "_Main").append(DOM);
+    }
+}
 
-    console.log("sourceLiteral = ");
-    console.log(sourceLiteral);
-    console.log("sourceIndex = " + sourceIndex);
+// アラートダイアログで改修の詳細を表示する
+function func_DialogKaishu(obj)
+{
+    var i;
+    var elm_i = arrayKaishu["リスト"]["分類"];
+    var elm_i_Length = elm_i.length;
+    var elm_j;
+    var returnInArray;
+    var sourceLiteral;
+    var tmpKaishuName = $(obj).find(".Kaishu_Soubi").text();
+
+    //console.log("tmpKaishuName: " + tmpKaishuName);
+
+    for(i = 0; i < elm_i_Length; i++)
+    {
+        elm_j = arrayKaishu["リスト"]["装備名"][elm_i[i]];
+        returnInArray = $.inArray(tmpKaishuName, elm_j);
+        if(returnInArray != -1)
+        {
+            //console.log("arrayKaishu[" + elm_i + "[" + i + "]][" + tmpKaishuName + "]");
+            sourceLiteral = arrayKaishu[elm_i[i]][tmpKaishuName];
+            break;
+        }
+    }
 
 /*
-            "12.7cm連装砲B型改二":{
-                "燃":10, "弾":40, "鋼":70, "ボ":0, 
-                 "☆0":{"開発":[2, 2], "改修":[2, 3], "装備": 0, "装備名": "-"},
-                 "☆6":{"開発":[2, 3], "改修":[2, 4], "装備": 1, "装備名": "12.7cm連装砲B型改二"},
-                "☆10":{"開発":[-1, -1], "改修":[-1, -1], "装備": -1, "装備名": "-", "次": "-"},
-                "月":["夕立改二", "綾波改二"], 
-                "火":["夕立改二", "綾波改二"], 
-                "水":["夕立改二", "綾波改二"], 
-                "木":[-1], 
-                "金":[-1], 
-                "土":[-1], 
-                "日":[-1], 
-            },
+    console.log("sourceLiteral = ");
+    console.log(sourceLiteral);
 */
+
+    $("#Kaishu_Alert").find("[class ^= Alert_Kaishu_Group]").css("display", "block");
     $(".Alert_Kaishu_Name").html(tmpKaishuName);
     $(".Alert_Kaishu_ConsumeFuel").html(sourceLiteral["燃"]);
     $(".Alert_Kaishu_ConsumeAmmo").html(sourceLiteral["弾"]);
@@ -204,6 +179,7 @@ function func_DialogKaishu(obj)
     $(".Alert_Kaishu_Improve100Num10").html(sourceLiteral["☆10"]["改修"][1]);
     $(".Alert_Kaishu_ConsumeEquip10").html(sourceLiteral["☆10"]["装備"]);
     $(".Alert_Kaishu_EquipNum10").html(sourceLiteral["☆10"]["装備名"]);
+    $(".Alert_Kaishu_NextEquip").html(sourceLiteral["☆10"]["次"]);
     $(".Alert_Kaishu_Monday").html(sourceLiteral["月"]);
     $(".Alert_Kaishu_Tuesday").html(sourceLiteral["火"]);
     $(".Alert_Kaishu_Wednesday").html(sourceLiteral["水"]);
@@ -211,5 +187,11 @@ function func_DialogKaishu(obj)
     $(".Alert_Kaishu_Friday").html(sourceLiteral["金"]);
     $(".Alert_Kaishu_Saturday").html(sourceLiteral["土"]);
     $(".Alert_Kaishu_Sunday").html(sourceLiteral["日"]);
-    $('#Kaishu_Alert').show("fast");
+
+    if($(".Alert_Kaishu_NextEquip").text() == "-")
+    {
+        //console.log("  func_DialogKaishu: hide Alert_Kaishu_Group_10");
+        $(".Alert_Kaishu_Group_10").css("display", "none");
+    }
+    $("#Kaishu_Alert").show("fast");
 }

@@ -1,7 +1,10 @@
 // 汎用変数やで(*'v'*)
     var generalOrder = ["1st", "2nd", "3rd", "4th", "5th", "6th"];
+    var generalOrder_Length = generalOrder.length;
     var arrayDay = ["月", "火", "水", "木", "金", "土", "日"];
+    var arrayDay_Length = arrayDay.length;
     var arrayDayId = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    var arrayDayId_Length = arrayDayId.length;
 
 // 艦載機ページ用やで(*'v'*)
     var arrayKansaiki =

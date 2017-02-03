@@ -1,118 +1,185 @@
-// 艦載機ページ用やで(*'v'*)
+//艦載機ページ用やで(*'v'*)
 function func_pageKansaiki()
 {
-    var i, j, elm_i, elm_j;
+    var DOM = "";
 
-    $.each(arrayKansaiki["リスト"]["艦種"], function(i, elm_i)
+    //putKanmusu用
+    var m;
+    var DOMListItem;
+
+    var DOMOnsRow = "vertical-align='center'";
+    var DOMPutKanmusuId = "id='putKanmusu[m]' onclick='collapseSetKanmusuType(this);' modifier='chevron'";
+    var DOMPutKanmusuText = ["一番艦", "二番艦", "三番艦", "四番艦", "五番艦", "六番艦"];
+
+    //putKansaiki用
+    var n;
+
+    var DOMPutKansaikiId = "id='putKansaiki[m]' onclick='collapseSetKansaikiSlot(this);' modifier='chevron'";
+    var DOMAlignKansaiki = "class='alignKansaiki'";
+    var DOMDetailKansaiki = "class='detailKansaiki[m]'";
+    var DOMDetailKansaikiSpan = "\
+    <span class='alignKansaikiSlot'>-</span>\
+        <span class='alignKansaikiName'> </span>\
+        <span class='alignKansaikiFloat'>\
+            <span class='alignKansaikiPlus'> </span>\
+            <span class='alignKansaikiMastery'> </span>\
+        </span>\
+    </span>";
+
+    //collapseSetKanmusu用
+    var DOMKanmusu;
+    var i;
+    var elm_i = arrayKansaiki["リスト"]["艦種"];
+    var elm_i_Length = elm_i.length;
+    var j;
+    var elm_j;
+    var elm_j_Length;
+
+    var DOMCollapseSetKanmusu = "id='collapseSetKanmusu[m]' style='display: none;'";
+    var DOMSetKanmusuType = "class='setKanmusuType_[i]'";
+    var DOMKanmusuType = "onclick='collapseSetKanmusu(this);' modifier='chevron'";
+    var DOMSetKanmusuName = "class='setKanmusuName_[i]' style='display: none;'";
+    var DOMPutKanmusu = "onclick='putKanmusuText(this);' modifier='chevron'";
+
+    //collapseSetKansaiki用
+    var DOMKansaiki;
+    var v;
+    var w;
+    var elm_w = arrayKansaiki["リスト"]["機種"];
+    var elm_w_Length = elm_w.length;
+    var x;
+    var elm_x;
+    var elm_x_Length;
+    var y;
+
+    var DOMCollapseSetKansaiki = "id='collapseSetKansaiki[m]' style='display: none;'";
+    var DOMSetKansaiki = "class='setKansaiki[m]' onclick='collapseSetKansaikiType(this);' tappable";
+    var DOMLabelLeft = "class='left'";
+    var DOMLabelCenter = "for='[m]-[v]' class='center'";
+    var DOMOnsInput = "name='setKansaiki[m]' type='radio' class='setKansaiki[m]' input-id='[m]-[v]'";
+    var DOMInputKansaikiText = ["1番機", "2番機", "3番機", "4番機"];
+
+    var DOMSetKansaikiType = "class='setKansaikiType_[w]' style='display: none;'";
+    var DOMKansaikiType = "onclick='collapseSetKansaiki(this);' modifier='chevron'";
+    var DOMSetKansaikiName = "class='setKansaiki_[w]' style='display: none;'";
+    var DOMKansaikiName = "onclick='collapseSetKansaikiMastery(this);' modifier='chevron'";
+    var DOMSetKansaikiMastery = "class='setKansaikiMastery_[y]' style='display: none;'";
+    var DOMKansaikiMastery = "onclick='putKansaikiText(this);' modifier='chevron'";
+    var DOMKansaikiMasteryText = ["+0 -", "+1 |", "+2 ||", "+3 |||", "+4 /", "+5 //", "+6 ///", "+7 >>"];
+
+    var DOMPutKansaiki = "onclick='putKansaikiText(this);' modifier='chevron'";
+
+    //艦隊の艦娘の数(6)だけ繰り返し
+    for(m = 0; m < 6; m++)
     {
-        //console.log(" i=" + i + ":.setKanmusuType: elm_i = " + elm_i);
+        DOMListItem = generateDOM("ons-row", "start", DOMOnsRow);
+            DOMListItem += generateDOM("ons-col", "start");
+                DOMListItem += generateDOM("ons-list-item", "start", DOMPutKanmusuId, [m]);
+                    DOMListItem += DOMPutKanmusuText[m];
+                DOMListItem += generateDOM("ons-list-item", "end");
+            DOMListItem += generateDOM("ons-col", "end");
+            DOMListItem += generateDOM("ons-col", "start");
+                DOMListItem += generateDOM("ons-list-item", "start", DOMPutKansaikiId, [m]);
 
-        //コピー元に通し番号を追加して.Kansaiki_Templateに追加する
-        $(".setKanmusuType_Origin").clone(true)
-            .removeAttr("class")
-            .addClass("setKanmusuType_" + i)
-            .appendTo(".Kansaiki_Template_Kanmusu");
-        $(".setKanmusuTypeNode_Origin").children().clone(true)
-            .appendTo(".setKanmusuType_" + i);
-
-        //appendしたons-list-itemに艦種を挿入する
-        $(".setKanmusuType_" + i).children()
-            .html(elm_i);
-
-        //コピー元に通し番号を追加して.setKanmusuTypeに追加する
-        $(".setKanmusu_Origin").clone(true)
-            .removeAttr("class")
-            .addClass("setKanmusu_" + i)
-            .appendTo(".setKanmusuType_" + i);
-
-        $.each(arrayKansaiki["リスト"]["艦娘"][elm_i], function(j, elm_j)
+        //艦娘のスロット数(4)だけ繰り返し
+        for(n = 0; n < 4; n++)
         {
-            //console.log("  j=" + j + ":.setKanmusu: elm_j[0] = " + elm_j[0]);
+                    DOMListItem += generateDOM("ons-row", "start", DOMAlignKansaiki);
+                        DOMListItem += generateDOM("ons-col", "start");
+                            DOMListItem += generateDOM("div", "start", DOMDetailKansaiki, [m]);
+                                DOMListItem += DOMDetailKansaikiSpan;
+                            DOMListItem += generateDOM("div", "end");
+                        DOMListItem += generateDOM("ons-col", "end");
+                    DOMListItem += generateDOM("ons-row", "end");
+        }
+                DOMListItem += generateDOM("ons-list-item", "end");
+            DOMListItem += generateDOM("ons-col", "end");
+        DOMListItem += generateDOM("ons-row", "end");
 
-            $(".setKanmusuNode_Origin").children().clone(true)
-                .appendTo(".setKanmusu_" + i);
-            //appendしたons-list-itemに艦名を挿入する
-            $(".setKanmusu_" + i).children().eq(j)
-                .html(elm_j);
-        });
-    });
+        DOM += DOMListItem;
 
-    //setKansaikiMasteryの下準備
-    $(".setKansaikiMastery_Origin").clone(true)
-        .removeAttr("class")
-        .addClass("setKansaikiMastery_array")
-        .appendTo(".Kansaiki_Template_Kansaiki");
-
-    $.each(arrayKansaiki["リスト"]["熟練度"], function(i, elm_i)
-    {
-        //console.log(" i=" + i + ":.setKansaikiMastery: elm_i = " + elm_i);
-        $(".setKansaikiMasteryNode_Origin").children().clone(true)
-            .appendTo(".setKansaikiMastery_array");
-        //上でappendしたons-list-itemに熟練度を挿入する
-        $(".setKansaikiMastery_array").children().eq(i)
-            .html("+" + i + " " + elm_i);
-    });
-
-    $.each(arrayKansaiki["リスト"]["機種"], function(i, elm_i)
-    {
-        //console.log(" i=" + i + ":.setKansaikiType: elm_i = " + elm_i);
-
-        //コピー元に通し番号を追加して#collapseSetKansaikiに追加する
-        $(".setKansaikiType_Origin").clone(true)
-            .removeAttr("class")
-            .addClass("setKansaikiType_" + i)
-            .appendTo(".Kansaiki_Template_Kansaiki");
-        $(".setKansaikiTypeNode_Origin").children().clone(true)
-            .appendTo(".setKansaikiType_" + i);
-
-        //上でappendしたons-list-itemに機種を挿入する
-        $(".setKansaikiType_" + i).children()
-            .html(elm_i);
-
-        //コピー元に通し番号を追加して.setKansaikiTypeに追加する
-        $(".setKansaiki_Origin").clone(true)
-            .removeAttr("class")
-            .addClass("setKansaiki_" + i)
-            .appendTo(".setKansaikiType_" + i);
-
-        $.each(arrayKansaiki["リスト"]["艦載機"][elm_i], function(j, elm_j)
+        //艦種の数だけ繰り返し
+        DOMKanmusu = generateDOM("div", "start", DOMCollapseSetKanmusu, [m]);
+        for(i = 0; i < elm_i_Length; i++)
         {
-            //console.log("  j=" + j + ":.setKansaiki: elm_j[0] = " + elm_j[0]);
-            $(".setKansaikiNode_Origin").children().clone(true)
-                .appendTo(".setKansaiki_" + i);
+            DOMKanmusu += generateDOM("div", "start", DOMSetKanmusuType, [i]);
+                DOMKanmusu += generateDOM("ons-list-item", "start", DOMKanmusuType);
+                    DOMKanmusu += elm_i[i];
+                DOMKanmusu += generateDOM("ons-list-item", "end");
+                DOMKanmusu += generateDOM("div", "start", DOMSetKanmusuName, [i]);
 
-            //上でappendしたons-list-itemに機種名を挿入する
-            $(".setKansaiki_" + i).children().eq(j)
-                .html(elm_j);
-        });
+            //その艦種の艦娘の数だけ繰り返し
+            elm_j = arrayKansaiki["リスト"]["艦娘"][elm_i[i]];
+            elm_j_Length = elm_j.length;
+            for(j = 0; j < elm_j_Length; j++)
+            {
+                    DOMKanmusu += generateDOM("ons-list-item", "start", DOMPutKanmusu);
+                        DOMKanmusu += elm_j[j];
+                    DOMKanmusu += generateDOM("ons-list-item", "end");
+            }
+                DOMKanmusu += generateDOM("div", "end");
+            DOMKanmusu += generateDOM("div", "end");
+        }
+        DOMKanmusu += generateDOM("div", "end");
 
-        //setKansaikiMasteryの挿入
-        $.each(arrayKansaiki["リスト"]["艦載機"][elm_i], function(j, elm_j)
+        DOM += DOMKanmusu;
+
+        DOMKansaiki = generateDOM("div", "start", DOMCollapseSetKansaiki, [m]);
+            DOMKansaiki += generateDOM("ons-row", "start", DOMOnsRow);
+        //艦娘のスロット数(4)だけ繰り返し
+        for(v = 0; v < 4; v++)
         {
-            //console.log("  j=" + j + ":.setKansaikiMastery_array);
+                DOMKansaiki += generateDOM("ons-col", "start");
+                    DOMKansaiki += generateDOM("ons-list-item", "start", DOMSetKansaiki, [m]);
+                        DOMKansaiki += generateDOM("label", "start", DOMLabelLeft);
+                            DOMKansaiki += generateDOM("ons-input", "start", DOMOnsInput, [m, m, m, v]);
+                            DOMKansaiki += generateDOM("ons-input", "end");
+                        DOMKansaiki += generateDOM("label", "end");
+                        DOMKansaiki += generateDOM("label", "start", DOMLabelCenter, [m, v]);
+                            DOMKansaiki += DOMInputKansaikiText[v];
+                        DOMKansaiki += generateDOM("label", "end");
+                    DOMKansaiki += generateDOM("ons-list-item", "end");
+                DOMKansaiki += generateDOM("ons-col", "end");
+        }
 
-            $(".setKansaikiMastery_array").clone(true)
-                .removeAttr("class")
-                .addClass("setKansaikiMastery_" + i)
-                .insertAfter(".setKansaiki_" + i + " > ons-list-item:eq(" + j + ")");
-        });
-    });
+            DOMKansaiki += generateDOM("ons-row", "end");
 
-    //コピー元を削除する
-    $("#Kansaiki_origin").remove();
-    $(".setKansaikiMastery_array").remove();
+        //機種の数だけ繰り返し
+        for(w = 0; w < elm_w_Length; w++)
+        {
+            DOMKansaiki += generateDOM("div", "start", DOMSetKansaikiType, [w]);
+                DOMKansaiki += generateDOM("ons-list-item", "start", DOMKansaikiType);
+                    DOMKansaiki += elm_w[w];
+                DOMKansaiki += generateDOM("ons-list-item", "end");
+                DOMKansaiki += generateDOM("div", "start", DOMSetKansaikiName, [w]);
 
-    // idがsetKansaikiで始まる要素の数(6)だけ繰り返し
-    for(i = 0; i < $("[id^='collapseSetKanmusu']").length; i++)
-    {
-        $(".Kansaiki_Template_Kanmusu").children().clone(true)
-            .appendTo("#collapseSetKanmusu" + i);
-        $(".Kansaiki_Template_Kansaiki").children().clone(true)
-            .appendTo("#collapseSetKansaiki" + i);
+            //その機種の機体の数だけ繰り返し
+            elm_x = arrayKansaiki["リスト"]["艦載機"][elm_w[w]];
+            elm_x_Length = elm_x.length;
+            for(x = 0; x < elm_x_Length; x++)
+            {
+                    DOMKansaiki += generateDOM("ons-list-item", "start", DOMKansaikiName);
+                        DOMKansaiki += elm_x[x];
+                    DOMKansaiki += generateDOM("ons-list-item", "end");
+                    DOMKansaiki += generateDOM("div", "start", DOMSetKansaikiMastery, [x]);
+                //熟練度の数(8)だけ繰り返し
+                for(y = 0; y < 8; y++)
+                {
+                        DOMKansaiki += generateDOM("ons-list-item", "start", DOMKansaikiMastery);
+                            DOMKansaiki += DOMKansaikiMasteryText[y];
+                        DOMKansaiki += generateDOM("ons-list-item", "end");
+                }
+                    DOMKansaiki += generateDOM("div", "end");
+            }
+                DOMKansaiki += generateDOM("div", "end");
+            DOMKansaiki += generateDOM("div", "end");
+        }
+        DOMKansaiki += generateDOM("div", "end");
+
+        DOM += DOMKansaiki;
     }
-    //コピー元を削除する
-    $(".Kansaiki_Template_Kanmusu").remove();
-    $(".Kansaiki_Template_Kansaiki").remove();
+
+    $("#Kansaiki_Main").append(DOM);
 }
 
 //collapseSetKanmusuType(this)
@@ -140,10 +207,10 @@ function collapseSetKanmusu(obj)
     // classNum = .toggle()する要素のclassの数字部分を抜き出す
     var classNum = pickNumber($(obj).parent().attr("class"), false);
     // hideLocation = .hide()する場所
-    var hideLocation = $("[class^=setKanmusu_]:visible");
+    var hideLocation = $("[class^=setKanmusuName_]:visible");
     // toggleLocation = .toggle()する場所
-    var toggleLocation = $(obj).siblings("div[class^=setKanmusu_]");
-    //console.log("  collapseSetKanmusu:" + $(obj).text() + ", idNum:" + idNum);
+    var toggleLocation = $(obj).siblings("div[class^=setKanmusuName_]");
+    //console.log("  collapseSetKanmusu:" + $(obj).text() + ", classNum:" + classNum);
 
     if(hideLocation.length > 0 && toggleLocation.is(":visible") == false)
     {
@@ -275,7 +342,7 @@ function putKansaikiText(obj)
     /* OnsenUI1.0
     var updateOrderX = pickNumber($(".setKansaiki" + updateOrderY + "[style='background-color: gray;']").text(), false) - 1;
     */
-    var updateOrderX = pickNumber($("input:checked:visible").attr("id").slice(-1), false) - 1;
+    var updateOrderX = pickNumber($("input:checked:visible").attr("id").slice(-1), false);
     console.log("    putKansaikiText:Kansaiki = " + kansaiki + ", Plus = " + updatePlus + ", Mastery = " + updateMastery + 
                 ", orderY = " + updateOrderY + ", orderX = " + updateOrderX + ", index = " + updateIndex);
 
@@ -283,38 +350,6 @@ function putKansaikiText(obj)
     var putLocation = $(".detailKansaiki" + updateOrderY).eq(updateOrderX);
     updateKansaiki(updateType, updateIndex, updatePlus, updateMastery, updateOrderX, updateOrderY);
     updateFleet();
-}
-
-//highLightMe(オブジェクト(選択したons-list-item))
-function highLightMe(obj)
-{
-    var targetCss = $(obj).css("background-color");
-
-    //console.log(getProperties($(obj).parent("ons-row").children().childre(), "tagName"));
-
-    //まだ何も選んでないとき、もしくはsetKansaikiを閉じた後のとき、
-    //選択したsetKansaikiをグレーにし、それ以外をホワイトにする
-    //background-colorの初期状態はrgba(0, 0, 0, 0)、whiteを設定した時はrgb(255, 255, 255)になる。
-    if(targetCss == "rgba(0, 0, 0, 0)" || targetCss == "rgb(255, 255, 255)")
-    {
-        $(obj).parents("ons-row").children("ons-col").children("ons-list-item").css("background-color","white");
-        $(obj).css("background-color","gray");
-        //console.log("  highLightMe(grayed):" + $(obj).attr("class"));
-    }
-
-    //選択したsetKansaikiが選択中(グレー)のとき、
-    //選択したsetKansaikiをホワイトにする
-    //grayを設定した時はrgb(128, 128, 128)になる。
-    else if(targetCss == "rgb(128, 128, 128)")
-    {
-        $(obj).css("background-color","white");
-        //console.log("  highLightMe(whitened):" + $(obj).attr("class"));
-    }
-    //ふだんここを通ることはないはず。
-    else
-    {
-        console.log("  highLightMe(no colorized):" + $(obj).attr("class") + ", " + $(obj).css("background-color"));
-    }
 }
 
 //configFleet()
@@ -500,42 +535,4 @@ function configFleet()
         }
         $(".calcSeiku").html(tmpSeiku);
     };
-}
-
-//pickNumber(str, minus)
-//文字列から数値のみ抜き出す。
-//マイナスも含めて値を取得したい時は第2引数をtrueにする。
-function pickNumber(str, minus)
-{
-    var array;
-    console.log("pickNumber(" + str + ", " + minus + "): ");
-
-    //-が欲しい場合
-    if(minus == true)
-    {
-        array = str.match(/-?[0-9]+\.?[0-9]*/g);
-    }
-    //-がいらない場合
-    else
-    {
-        array = str.match(/[0-9]+\.?[0-9]*/g);
-    }
-
-    for(var i = 0; i < array.length; i++)
-    {
-        console.log(" " + parseFloat(array[i]));
-    }
-
-    return array[0];
-}
-
-//paddingLeft(対象文字列, 埋める文字, 桁数)
-//指定桁数まで、指定文字で左埋めする。
-function paddingleft(val, char, n)
-{
-    var leftval = "";
-    //ひとまず指定文字を指定文字数用意する。
-	for(; leftval.length < n; leftval += char);
-    //対象文字列と埋める文字を合成し、右から指定文字数で.slice()する。
-	return (leftval + val).slice(-n);
 }

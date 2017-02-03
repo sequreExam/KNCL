@@ -6,17 +6,17 @@ function func_pageSentou()
     //prechange時に発火
     tabSentou.addEventListener("prechange", function()
     {
-        console.log(" tabSentou:prechange");
+        //console.log(" tabSentou:prechange");
     }, false);
     //postchange時に発火
     tabSentou.addEventListener("postchange", function()
     {
-        console.log(" tabSentou:postchange");
+        //console.log(" tabSentou:postchange");
     }, false);
     //reactive時に発火
     tabSentou.addEventListener("reactive", function()
     {
-        console.log(" tabSentou:reactive");
+        //console.log(" tabSentou:reactive");
     }, false);
     tabSentou.setActiveTab(1);
 }
@@ -24,127 +24,280 @@ function func_pageSentou()
 // 対空ページ用やで(*'v'*)
 function func_pageSentou_AA()
 {
-    var i, j, elm_i, elm_j;
-    var targetEquipment, targetShootDown;
+    var DOM ="";
 
-    $.each(arraySentouAA["リスト"], function(i, elm_i)
+    //共通用
+    var DOMOnsRow = "vertical-align='center'";
+    var DOMOnsColWidth = "width='30%'";
+
+    //ons-list-header用
+    var i;
+    var elm_i = arraySentouAA["リスト"];
+    var elm_i_Length = elm_i.length;
+    var DOMListHeader;
+
+    var DOMListHeaderText = "撃墜数";
+
+    //ons-list-item用
+    var j;
+    var elm_j;
+    var elm_j_Length;
+    var DOMListItem;
+
+    var DOMDivClass = ["class='Sentou_AA_Equipment'", "class='Sentou_AA_ShootDown'"];
+
+    //攻撃の種類の数だけ繰り返し
+    for(i = 0; i < elm_i_Length; i++)
     {
-        //console.log(" #" + $(".Sentou_AA_Clone ons-list-header").eq(i).attr("id") + ": elm_i = " + elm_i);
+        DOMListHeader = generateDOM("ons-list-header", "start");
+            DOMListHeader += generateDOM("ons-row", "start", DOMOnsRow);
+                DOMListHeader += generateDOM("ons-col", "start");
+                    DOMListHeader += elm_i[i];
+                DOMListHeader += generateDOM("ons-col", "end");
+                DOMListHeader += generateDOM("ons-col", "start", DOMOnsColWidth);
+                    DOMListHeader += DOMListHeaderText;
+                DOMListHeader += generateDOM("ons-col", "end");
+            DOMListHeader += generateDOM("ons-row", "end");
+        DOMListHeader += generateDOM("ons-list-header", "end");
 
-        //#Sentou_AA_Headerに通し番号を追加して.Sentou_AA_Cloneに追加する
-        $(".Sentou_AA_Header").clone(true)
-        .removeClass("Sentou_AA_Header")
-        .addClass("Sentou_AA_Header_" + i)
-        .appendTo(".Sentou_AA_Clone");
+        DOM += DOMListHeader;
 
-        //ons-list-headerに列名を挿入する
-        $(".Sentou_AA_Clone .Sentou_AA_Type").eq(i).html(elm_i);
-
-        $.each(arraySentouAA[elm_i]["組み合わせ"], function(j, elm_j)
+        //その攻撃の種類の組み合わせの数だけ繰り返し
+        elm_j = arraySentouAA[elm_i[i]]["組み合わせ"];
+        elm_j_Length = elm_j.length;
+        for(j = 0; j < elm_j_Length; j++)
         {
-            //console.log("  #" + $(".Sentou_AA_Clone ons-list-item").eq(j).attr("id") + ": elm_j = " + arraySentouAAEquipment[j]);
+            DOMListItem = generateDOM("ons-list-item", "start");
+                DOMListItem += generateDOM("ons-row", "start", DOMOnsRow);
+                    DOMListItem += generateDOM("ons-col", "start");
+                        DOMListItem += generateDOM("div", "start", DOMDivClass[0]);
+                            DOMListItem += arraySentouAA[elm_i[i]]["組み合わせ"][j];
+                        DOMListItem += generateDOM("div", "end");
+                    DOMListItem += generateDOM("ons-col", "end");
+                    DOMListItem += generateDOM("ons-col", "start", DOMOnsColWidth);
+                        DOMListItem += generateDOM("div", "start", DOMDivClass[1]);
+                            DOMListItem += arraySentouAA[elm_i[i]]["撃墜数"][j];
+                        DOMListItem += generateDOM("div", "end");
+                    DOMListItem += generateDOM("ons-col", "end");
+                DOMListItem += generateDOM("ons-row", "end");
+            DOMListItem += generateDOM("ons-list-item", "end");
 
-            //#Sentou_AA_Listに通し番号を追加して.Sentou_OF_Cloneに追加する
-            $(".Sentou_AA_List").clone(true)
-            .removeClass("Sentou_AA_List")
-            .addClass("Sentou_AA_List_" + j)
-            .appendTo(".Sentou_AA_Clone");
-
-            //必要装備、撃墜数を挿入する
-            targetEquipment = ".Sentou_AA_Header_" + i + " ~ .Sentou_AA_List_" + j + " .Sentou_AA_Equipment";
-            targetShootDown = ".Sentou_AA_Header_" + i + " ~ .Sentou_AA_List_" + j + " .Sentou_AA_ShootDown";
-            $(targetEquipment).html(arraySentouAA[elm_i]["組み合わせ"][j]);
-            $(targetShootDown).html(arraySentouAA[elm_i]["撃墜数"][j]);
-        });
-    });
-    $(".Sentou_AA_origin").remove();
+            DOM += DOMListItem;
+        }
+    }
+    $("#Sentou_AA_Main").append(DOM);
 }
 
 // 弾着ページ用やで(*'v'*)
 function func_pageSentou_OF()
 {
-    var i, j, elm_i, elm_j;
-    var targetEquipmentA, targetEquipmentB, targetEquipmentC, targetEquipmentD, targetCorrection;
+    var DOM ="";
 
-    $.each(arraySentouOF["リスト"], function(i, elm_i)
+    //共通用
+    var DOMOnsRow = "vertical-align='center'";
+    var DOMOnsColWidth = ["width='30%'", "width='12.5%'", "width='12.5%'", "width='12.5%'", "width='12.5%'", "width='20%'"];
+
+    //ons-list-header用
+    var i;
+    var elm_i = arraySentouOF["リスト"];
+    var elm_i_Length = elm_i.length;
+    var DOMListHeader;
+
+    var DOMListHeaderText = ["", "主砲", "副砲", "徹甲", "電探", "倍率"];
+
+    //ons-list-item用
+    var j;
+    var elm_j;
+    var elm_j_Length;
+    var DOMListItem;
+
+    var DOMDivClass = ["class='Sentou_OF_Empty'", "class='Sentou_OF_EquipmentA'",
+                       "class='Sentou_OF_EquipmentB'", "class='Sentou_OF_EquipmentC'",
+                       "class='Sentou_OF_EquipmentD'", "class='Sentou_OF_Correction'"];
+
+    //攻撃の種類の数だけ繰り返し
+    for(i = 0; i < elm_i_Length; i++)
     {
-        //console.log(" #" + $(".Sentou_OF_Clone ons-list-header").eq(i).attr("id") + ": elm_i = " + elm_i);
+        DOMListHeader = generateDOM("ons-list-header", "start");
+            DOMListHeader += generateDOM("ons-row", "start", DOMOnsRow);
+                DOMListHeader += generateDOM("ons-col", "start", DOMOnsColWidth[0]);
+                    DOMListHeader += generateDOM("div", "start");
+                        DOMListHeader += elm_i[i];
+                    DOMListHeader += generateDOM("div", "end");
+                DOMListHeader += generateDOM("ons-col", "end");
+                DOMListHeader += generateDOM("ons-col", "start", DOMOnsColWidth[1]);
+                    DOMListHeader += generateDOM("div", "start");
+                        DOMListHeader += DOMListHeaderText[1];
+                    DOMListHeader += generateDOM("div", "end");
+                DOMListHeader += generateDOM("ons-col", "end");
+                DOMListHeader += generateDOM("ons-col", "start", DOMOnsColWidth[2]);
+                    DOMListHeader += generateDOM("div", "start");
+                        DOMListHeader += DOMListHeaderText[2];
+                    DOMListHeader += generateDOM("div", "end");
+                DOMListHeader += generateDOM("ons-col", "end");
+                DOMListHeader += generateDOM("ons-col", "start", DOMOnsColWidth[3]);
+                    DOMListHeader += generateDOM("div", "start");
+                        DOMListHeader += DOMListHeaderText[3];
+                    DOMListHeader += generateDOM("div", "end");
+                DOMListHeader += generateDOM("ons-col", "end");
+                DOMListHeader += generateDOM("ons-col", "start", DOMOnsColWidth[4]);
+                    DOMListHeader += generateDOM("div", "start");
+                        DOMListHeader += DOMListHeaderText[4];
+                    DOMListHeader += generateDOM("div", "end");
+                DOMListHeader += generateDOM("ons-col", "end");
+                DOMListHeader += generateDOM("ons-col", "start", DOMOnsColWidth[5]);
+                    DOMListHeader += generateDOM("div", "start");
+                        DOMListHeader += DOMListHeaderText[5];
+                    DOMListHeader += generateDOM("div", "end");
+                DOMListHeader += generateDOM("ons-col", "end");
+            DOMListHeader += generateDOM("ons-row", "end");
+        DOMListHeader += generateDOM("ons-list-header", "end");
 
-        //#Sentou_OF_Headerに通し番号を追加して.Sentou_OF_Cloneに追加する
-        $(".Sentou_OF_Header").clone(true)
-        .removeClass("Sentou_OF_Header")
-        .addClass("Sentou_OF_Header_" + i)
-        .appendTo(".Sentou_OF_Clone");
+        DOM += DOMListHeader;
 
-        //ons-list-headerに列名を挿入する
-        $(".Sentou_OF_Clone .Sentou_OF_Type").eq(i).html(elm_i);
-
-        $.each(arraySentouOF[elm_i]["組み合わせ"]["主砲"], function(j, elm_j)
+        //その攻撃の種類の組み合わせの数だけ繰り返し
+        elm_j = arraySentouOF[elm_i[i]]["組み合わせ"]["主砲"];
+        elm_j_Length = elm_j.length;
+        for(j = 0; j < elm_j_Length; j++)
         {
-            //console.log("  #" + $(".Sentou_OF_Clone ons-list-item").eq(j).attr("id") + ": elm_j = " + arraySentouAOCorrection[j]);
+            DOMListItem = generateDOM("ons-list-item", "start");
+                DOMListItem += generateDOM("ons-row", "start", DOMOnsRow);
+                    DOMListItem += generateDOM("ons-col", "start", DOMOnsColWidth[0]);
+                        DOMListItem += generateDOM("div", "start", DOMDivClass[0]);
+                        DOMListItem += generateDOM("div", "end");
+                    DOMListItem += generateDOM("ons-col", "end");
+                    DOMListItem += generateDOM("ons-col", "start", DOMOnsColWidth[1]);
+                        DOMListItem += generateDOM("div", "start", DOMDivClass[1]);
+                            DOMListItem += arraySentouOF[elm_i[i]]["組み合わせ"]["主砲"][j];
+                        DOMListItem += generateDOM("div", "end");
+                    DOMListItem += generateDOM("ons-col", "end");
+                    DOMListItem += generateDOM("ons-col", "start", DOMOnsColWidth[2]);
+                        DOMListItem += generateDOM("div", "start", DOMDivClass[2]);
+                            DOMListItem += arraySentouOF[elm_i[i]]["組み合わせ"]["副砲"][j];
+                        DOMListItem += generateDOM("div", "end");
+                    DOMListItem += generateDOM("ons-col", "end");
+                    DOMListItem += generateDOM("ons-col", "start", DOMOnsColWidth[3]);
+                        DOMListItem += generateDOM("div", "start", DOMDivClass[3]);
+                            DOMListItem += arraySentouOF[elm_i[i]]["組み合わせ"]["徹甲"][j];
+                        DOMListItem += generateDOM("div", "end");
+                    DOMListItem += generateDOM("ons-col", "end");
+                    DOMListItem += generateDOM("ons-col", "start", DOMOnsColWidth[4]);
+                        DOMListItem += generateDOM("div", "start", DOMDivClass[4]);
+                            DOMListItem += arraySentouOF[elm_i[i]]["組み合わせ"]["電探"][j];
+                        DOMListItem += generateDOM("div", "end");
+                    DOMListItem += generateDOM("ons-col", "end");
+                    DOMListItem += generateDOM("ons-col", "start", DOMOnsColWidth[5]);
+                        DOMListItem += generateDOM("div", "start", DOMDivClass[5]);
+                            DOMListItem += arraySentouOF[elm_i[i]]["組み合わせ"]["倍率"][j];
+                        DOMListItem += generateDOM("div", "end");
+                    DOMListItem += generateDOM("ons-col", "end");
+                DOMListItem += generateDOM("ons-row", "end");
+            DOMListItem += generateDOM("ons-list-item", "end");
 
-            //#Sentou_OF_Listに通し番号を追加して.Sentou_OF_Cloneに追加する
-            $(".Sentou_OF_List").clone(true)
-            .removeClass("Sentou_OF_List")
-            .addClass("Sentou_OF_List_" + j)
-            .appendTo(".Sentou_OF_Clone");
-
-            //必要装備1, 2, 3, 4、倍率を挿入する
-            targetEquipmentA = ".Sentou_OF_Header_" + i + " ~ .Sentou_OF_List_" + j + " .Sentou_OF_EquipmentA";
-            targetEquipmentB = ".Sentou_OF_Header_" + i + " ~ .Sentou_OF_List_" + j + " .Sentou_OF_EquipmentB";
-            targetEquipmentC = ".Sentou_OF_Header_" + i + " ~ .Sentou_OF_List_" + j + " .Sentou_OF_EquipmentC";
-            targetEquipmentD = ".Sentou_OF_Header_" + i + " ~ .Sentou_OF_List_" + j + " .Sentou_OF_EquipmentD";
-            targetCorrection = ".Sentou_OF_Header_" + i + " ~ .Sentou_OF_List_" + j + " .Sentou_OF_Correction";
-            $(targetEquipmentA).html(arraySentouOF[elm_i]["組み合わせ"]["主砲"][j]);
-            $(targetEquipmentB).html(arraySentouOF[elm_i]["組み合わせ"]["副砲"][j]);
-            $(targetEquipmentC).html(arraySentouOF[elm_i]["組み合わせ"]["徹甲"][j]);
-            $(targetEquipmentD).html(arraySentouOF[elm_i]["組み合わせ"]["電探"][j]);
-            $(targetCorrection).html(arraySentouOF[elm_i]["組み合わせ"]["倍率"][j]);
-        });
-    });
-    $(".Sentou_OF_origin").remove();
+            DOM += DOMListItem;
+        }
+    }
+    $("#Sentou_OF_Main").append(DOM);
 }
 
 // 夜戦ページ用やで(*'v'*)
 function func_pageSentou_NC()
 {
-    var i, j, elm_i, elm_j;
-    var targetEquipmentA, targetEquipmentB, targetEquipmentC, targetCorrection;
+    var DOM = "";
 
-    $.each(arraySentouNC["リスト"], function(i, elm_i)
+    //共通用
+    var DOMOnsRow = "vertical-align='center'";
+    var DOMOnsColWidth = ["", "width='16.6%'", "width='16.6%'", "width='16.6%'", "width='20%'"];
+
+    //ons-list-header用
+    var i;
+    var elm_i = arraySentouNC["リスト"];
+    var elm_i_Length = elm_i.length;
+    var DOMListHeader;
+
+    var DOMListHeaderText = ["", "主砲", "副砲", "魚雷", "倍率"];
+
+    //ons-list-item用
+    var j;
+    var elm_j;
+    var elm_j_Length;
+    var DOMListItem;
+
+    var DOMDivClass = ["class='Sentou_NC_Empty'", "class='Sentou_NC_EquipmentA'", 
+                       "class='Sentou_NC_EquipmentB'", "class='Sentou_NC_EquipmentC'",
+                       "class='Sentou_NC_Correction'"];
+
+    //攻撃の種類の数だけ繰り返し
+    for(i = 0; i < elm_i_Length; i++)
     {
-        //console.log(" #" + $(".Sentou_NC_Clone ons-list-header").eq(i).attr("id") + ": elm_i = " + elm_i);
+        DOMListHeader = generateDOM("ons-list-header", "start");
+            DOMListHeader += generateDOM("ons-row", "start", DOMOnsRow);
+                DOMListHeader += generateDOM("ons-col", "start", DOMOnsColWidth[0]);
+                    DOMListHeader += generateDOM("div", "start");
+                        DOMListHeader += elm_i[i];
+                    DOMListHeader += generateDOM("div", "end");
+                DOMListHeader += generateDOM("ons-col", "end");
+                DOMListHeader += generateDOM("ons-col", "start", DOMOnsColWidth[1]);
+                    DOMListHeader += generateDOM("div", "start");
+                        DOMListHeader += DOMListHeaderText[1];
+                    DOMListHeader += generateDOM("div", "end");
+                DOMListHeader += generateDOM("ons-col", "end");
+                DOMListHeader += generateDOM("ons-col", "start", DOMOnsColWidth[2]);
+                    DOMListHeader += generateDOM("div", "start");
+                        DOMListHeader += DOMListHeaderText[2];
+                    DOMListHeader += generateDOM("div", "end");
+                DOMListHeader += generateDOM("ons-col", "end");
+                DOMListHeader += generateDOM("ons-col", "start", DOMOnsColWidth[3]);
+                    DOMListHeader += generateDOM("div", "start");
+                        DOMListHeader += DOMListHeaderText[3];
+                    DOMListHeader += generateDOM("div", "end");
+                DOMListHeader += generateDOM("ons-col", "end");
+                DOMListHeader += generateDOM("ons-col", "start", DOMOnsColWidth[4]);
+                    DOMListHeader += generateDOM("div", "start");
+                        DOMListHeader += DOMListHeaderText[4];
+                    DOMListHeader += generateDOM("div", "end");
+                DOMListHeader += generateDOM("ons-col", "end");
+            DOMListHeader += generateDOM("ons-row", "end");
+        DOMListHeader += generateDOM("ons-list-header", "end");
 
-        //#Sentou_NC_Headerに通し番号を追加して.Sentou_NC_Cloneに追加する
-        $(".Sentou_NC_Header").clone(true)
-        .removeClass("Sentou_NC_Header")
-        .addClass("Sentou_NC_Header_" + i)
-        .appendTo(".Sentou_NC_Clone");
+        DOM += DOMListHeader;
 
-        //ons-list-headerに列名を挿入する
-        $(".Sentou_NC_Clone .Sentou_NC_Type").eq(i).html(elm_i);
-
-        $.each(arraySentouNC[elm_i]["組み合わせ"]["主砲"], function(j, elm_j)
+        //その攻撃の種類の組み合わせの数だけ繰り返し
+        elm_j = arraySentouNC[elm_i[i]]["組み合わせ"]["主砲"];
+        elm_j_Length = elm_j.length;
+        for(j = 0; j < elm_j_Length; j++)
         {
-            //console.log("  #" + $(".Sentou_NC_Clone ons-list-item").eq(j).attr("id") + ": elm_j = " + arraySentouNBCorrection[j]);
+            DOMListItem = generateDOM("ons-list-item", "start");
+                DOMListItem += generateDOM("ons-row", "start", DOMOnsRow);;
+                    DOMListItem += generateDOM("ons-col", "start", DOMOnsColWidth[0]);
+                        DOMListItem += generateDOM("div", "start", DOMDivClass[0]);
+                        DOMListItem += generateDOM("div", "end");
+                    DOMListItem += generateDOM("ons-col", "end");
+                    DOMListItem += generateDOM("ons-col", "start", DOMOnsColWidth[1]);
+                        DOMListItem += generateDOM("div", "start", DOMDivClass[1]);
+                            DOMListItem += arraySentouNC[elm_i[i]]["組み合わせ"]["主砲"][j];
+                        DOMListItem += generateDOM("div", "end");
+                    DOMListItem += generateDOM("ons-col", "end");
+                    DOMListItem += generateDOM("ons-col", "start", DOMOnsColWidth[2]);
+                        DOMListItem += generateDOM("div", "start", DOMDivClass[2]);
+                            DOMListItem += arraySentouNC[elm_i[i]]["組み合わせ"]["副砲"][j];
+                        DOMListItem += generateDOM("div", "end");
+                    DOMListItem += generateDOM("ons-col", "end");
+                    DOMListItem += generateDOM("ons-col", "start", DOMOnsColWidth[3]);
+                        DOMListItem += generateDOM("div", "start", DOMDivClass[3]);
+                            DOMListItem += arraySentouNC[elm_i[i]]["組み合わせ"]["魚雷"][j];
+                        DOMListItem += generateDOM("div", "end");
+                    DOMListItem += generateDOM("ons-col", "end");
+                    DOMListItem += generateDOM("ons-col", "start", DOMOnsColWidth[4]);
+                        DOMListItem += generateDOM("div", "start", DOMDivClass[4]);
+                            DOMListItem += arraySentouNC[elm_i[i]]["組み合わせ"]["倍率"][j];
+                        DOMListItem += generateDOM("div", "end");
+                    DOMListItem += generateDOM("ons-col", "end");
+                DOMListItem += generateDOM("ons-row", "end");
+            DOMListItem += generateDOM("ons-list-item", "end");
 
-            //#Sentou_NC_Listに通し番号を追加して.Sentou_NC_Cloneに追加する
-            $(".Sentou_NC_List").clone(true)
-            .removeClass("Sentou_NC_List")
-            .addClass("Sentou_NC_List_" + j)
-            .appendTo(".Sentou_NC_Clone");
-
-            //必要装備1, 2, 3、倍率を挿入する
-            targetEquipmentA = ".Sentou_NC_Header_" + i + " ~ .Sentou_NC_List_" + j + " .Sentou_NC_EquipmentA";
-            targetEquipmentB = ".Sentou_NC_Header_" + i + " ~ .Sentou_NC_List_" + j + " .Sentou_NC_EquipmentB";
-            targetEquipmentC = ".Sentou_NC_Header_" + i + " ~ .Sentou_NC_List_" + j + " .Sentou_NC_EquipmentC";
-            targetCorrection = ".Sentou_NC_Header_" + i + " ~ .Sentou_NC_List_" + j + " .Sentou_NC_Correction";
-            $(targetEquipmentA).html(arraySentouNC[elm_i]["組み合わせ"]["主砲"][j]);
-            $(targetEquipmentB).html(arraySentouNC[elm_i]["組み合わせ"]["副砲"][j]);
-            $(targetEquipmentC).html(arraySentouNC[elm_i]["組み合わせ"]["魚雷"][j]);
-            $(targetCorrection).html(arraySentouNC[elm_i]["組み合わせ"]["倍率"][j]);
-        });
-    });
-    //コピー元を消す
-    $(".Sentou_NC_origin").remove();
+            DOM += DOMListItem;
+        }
+    }
+    $("#Sentou_NC_Main").append(DOM);
 }

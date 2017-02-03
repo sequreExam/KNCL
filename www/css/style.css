@@ -20,14 +20,14 @@
 .alignKansaiki
 {
     font-size: 75%;
-    line-height: 33%;
+    line-height: 25%;
 }
 .alignKansaikiSlot
 {
     margin: 0px auto;
 	width: 1.5em;
 	display: inline-block;
-	text-align:right;
+	text-align: right;
 }
 .alignKansaikiName
 {
@@ -48,6 +48,10 @@
 {
 	float: right;
 }
+label.center
+{
+    font-size: 100%;
+}
 
 /* 改修ページ用やで */
 .Kaishu_Soubi
@@ -61,27 +65,20 @@
 }
 
 /* 遠征ページ用やで */
-.Ensei_Headercss, .Ensei_Necessary
+.Ensei_Area
 {
-    font-size: 80%;
+}
+.Ensei_FlagshipLv, .Ensei_MinNum
+{
+    text-align: center;
 }
 .Ensei_Necessary
 {
     line-height: 100%;
-}
-.Ensei_FlagshipLv, .Ensei_MinNum, .Ensei_Area
-{
-    text-align: center;
     font-size: 80%;
 }
 
 /* 戦闘ページ用やで */
-.Sentou_Headercss,
-{
-    width: 100%;
-    margin: 0 auto;
-}
-
 .Sentou_AA_ShootDown
 {
     text-align: center;

@@ -1,75 +1,109 @@
 // 遠征ページ用やで(*'v'*)
 function func_pageEnsei()
 {
-    var i, j, elm_i, elm_j;
-    var targetEnseiName, targetEnseiFlagshipLv, targetEnseiMinNum, targetEnseiNecessary;
-    var setEnseiPointer = 0;
+    var DOM = "";
 
-    $.each(arrayEnsei["リスト"]["海域"], function(i, elm_i)
+    //共通用
+    var DOMOnsRow = "vertical-align='center'";
+    var DOMOnsColWidth = ["width='50%'", "", "", "width='25%'"];
+
+    //ons-list-header用
+    var i;
+    var elm_i = arrayEnsei["リスト"]["海域"];
+    var elm_i_Length = elm_i.length;
+    var DOMListHeader;
+
+    var DOMListHeaderText = ["", "旗艦Lv", "隻数", "必須艦種"];
+
+    //ons-list-item用
+    var j;
+    var elm_j;
+    var elm_j_Length;
+    var DOMListItem;
+
+    var DOMOnsListItem = "modifier='tappable' onclick='func_DialogEnsei(this);'";
+    var DOMOnsColClass = ["class='Ensei_Area' width='50%'", "class='Ensei_FlagshipLv'", 
+                                "class='Ensei_MinNum'", "class='Ensei_Necessary' width='25%'"];
+
+    //海域の数だけ繰り返し
+    for(i = 0; i < elm_i_Length; i++)
     {
-        //.Ensei_Headerに通し番号を追加して.Ensei_Cloneに追加する
-        $(".Ensei_Header").clone(true)
-        .removeClass("Ensei_Header")
-        .addClass("Ensei_Header_" + i)
-        .appendTo(".Ensei_Clone");
+        DOMListHeader = generateDOM("ons-list-header", "start");
+            DOMListHeader += generateDOM("ons-row", "start", DOMOnsRow);
+                DOMListHeader += generateDOM("ons-col", "start", DOMOnsColWidth[0]);
+                    DOMListHeader += elm_i[i];
+                DOMListHeader += generateDOM("ons-col", "end");
+                DOMListHeader += generateDOM("ons-col", "start");
+                    DOMListHeader += DOMListHeaderText[1];
+                DOMListHeader += generateDOM("ons-col", "end");
+                DOMListHeader += generateDOM("ons-col", "start");
+                    DOMListHeader += DOMListHeaderText[2];
+                DOMListHeader += generateDOM("ons-col", "end");
+                DOMListHeader += generateDOM("ons-col", "start", DOMOnsColWidth[3]);
+                    DOMListHeader += DOMListHeaderText[3];
+                DOMListHeader += generateDOM("ons-col", "end");
+            DOMListHeader += generateDOM("ons-row", "end");
+        DOMListHeader += generateDOM("ons-list-header", "end");
 
-        //ons-list-headerに海域名を挿入する
-        $(".Ensei_Clone .Ensei_Area").eq(i).html(elm_i);
+        DOM += DOMListHeader;
 
-        $.each(arrayEnsei["リスト"]["遠征"][elm_i], function(j, elm_j)
+        //その海域の遠征の数だけ繰り返し
+        elm_j = arrayEnsei["リスト"]["遠征"][elm_i[i]];
+        elm_j_Length = elm_j.length;
+        for(j = 0; j < elm_j_Length; j++)
         {
-            //.Ensei_Listに通し番号を追加して.Ensei_Cloneに追加する
-            $(".Ensei_List").clone(true)
-            .removeClass("Ensei_List")
-            .addClass("Ensei_List_" + j)
-            .appendTo(".Ensei_Clone");
-
-            //遠征名、旗艦Lv、最小隻数、必要艦種を挿入する
-            targetEnseiName = ".Ensei_Header_" + i + " ~ .Ensei_List_" + j + " .Ensei_Name";
-            targetEnseiFlagshipLv = ".Ensei_Header_" + i + " ~ .Ensei_List_" + j + " .Ensei_FlagshipLv";
-            targetEnseiMinNum = ".Ensei_Header_" + i + " ~ .Ensei_List_" + j + " .Ensei_MinNum";
-            targetEnseiNecessary = ".Ensei_Header_" + i + " ~ .Ensei_List_" + j + " .Ensei_Necessary";
-            $(targetEnseiName).html(elm_j);
-            $(targetEnseiFlagshipLv).html(arrayEnsei[elm_i][elm_j]["基本"]["旗艦Lv"]);
-            $(targetEnseiMinNum).html(arrayEnsei[elm_i][elm_j]["基本"]["必要隻数"]);
-            $(targetEnseiNecessary).html(arrayEnsei[elm_i][elm_j]["基本"]["必要艦種"]);
-        });
-    });
-    //コピー元を消す
-    $(".Ensei_origin").remove();
+            DOMListItem = generateDOM("ons-list-item", "start", DOMOnsListItem);
+                DOMListItem += generateDOM("ons-row", "start", DOMOnsRow);
+                    DOMListItem += generateDOM("ons-col", "start", DOMOnsColClass[0]);
+                        DOMListItem += elm_j[j];
+                    DOMListItem += generateDOM("ons-col", "end");
+                    DOMListItem += generateDOM("ons-col", "start", DOMOnsColClass[1]);
+                        DOMListItem += arrayEnsei[elm_i[i]][elm_j[j]]["基本"]["旗艦Lv"];
+                    DOMListItem += generateDOM("ons-col", "end");
+                    DOMListItem += generateDOM("ons-col", "start", DOMOnsColClass[2]);
+                        DOMListItem += arrayEnsei[elm_i[i]][elm_j[j]]["基本"]["必要隻数"];
+                    DOMListItem += generateDOM("ons-col", "end");
+                    DOMListItem += generateDOM("ons-col", "start", DOMOnsColClass[3]);
+                        DOMListItem += arrayEnsei[elm_i[i]][elm_j[j]]["基本"]["必要艦種"];
+                    DOMListItem += generateDOM("ons-col", "end");
+                DOMListItem += generateDOM("ons-row", "end");
+            DOMListItem += generateDOM("ons-list-item", "end");
+            DOM += DOMListItem;
+        }
+    }
+    $("#Ensei_Main").append(DOM);
 }
 
-//showPopoverとfunc_pagePopoverEnseiを同時に呼びつつ、func_～～にobjを渡したかったんやで(*'v'*)
-function preparePopoverEnsei(obj, bePopoveredPage, bePopoveredPageVar)
-{
-    showPopover(obj, bePopoveredPage, bePopoveredPageVar);
-    $('#pagepopover_Ensei').load(func_pagePopoverEnsei(obj));
-}
-
+// アラートダイアログで遠征の詳細を表示する
 function func_DialogEnsei(obj)
 {
-    var i, elm_i;
-    var sourceLiteral, sourceIndex;
-    var tmpEnseiName = $(obj).find(".Ensei_Name").text();
+    var i;
+    var elm_i = arrayEnsei["リスト"]["海域"];
+    var elm_i_Length = elm_i.length;
+    var elm_j;
+    var returnInArray;
+    var sourceLiteral;
+    var tmpEnseiName = $(obj).html();
+    tmpEnseiName = $(tmpEnseiName).find("ons-col:first").text();
 
-    //console.log("$(obj).find(\".Ensei_Name\").text():" + tmpEnseiName);
+    //console.log("tmpEnseiName: " + tmpEnseiName);
 
-    $.each(arrayEnsei["リスト"]["遠征"], function(i, elm_i)
+    for(i = 0; i < elm_i_Length; i++)
     {
-        //console.log(i + ", " + elm_i + $.inArray(tmpEnseiName, elm_i));
-
-        if($.inArray(tmpEnseiName, elm_i) != -1)
+        elm_j = arrayEnsei["リスト"]["遠征"][elm_i[i]];
+        returnInArray = $.inArray(tmpEnseiName, elm_j);
+        if(returnInArray != -1)
         {
-            sourceIndex = i;
-            sourceLiteral = arrayEnsei[sourceIndex][tmpEnseiName];
-            //return false になるとこの$.each()ループを中断する
-            return false;
+            //console.log("arrayEnsei[" + elm_i + "[" + i + "]][" + tmpEnseiName + "]");
+            sourceLiteral = arrayEnsei[elm_i[i]][tmpEnseiName];
+            break;
         }
-    });
+    }
 
-    //console.log("sourceLiteral = ");
-    //console.log(sourceLiteral);
-    //console.log("sourceIndex = " + sourceIndex);
+/*
+    console.log("sourceLiteral = ");
+    console.log(sourceLiteral);
+*/
 
     $(".Alert_Ensei_Name").html(tmpEnseiName);
     $(".Alert_Ensei_FlagshipLv").html(sourceLiteral["基本"]["旗艦Lv"]);

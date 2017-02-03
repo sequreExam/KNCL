@@ -6,65 +6,6 @@
         <div class="right"></div>
     </ons-toolbar>
 
-    <div style="text-align: center;">
-        <ons-scroller>
-            <ons-list>
-                <div class="Ensei_origin">
-                    <ons-list-header class="Ensei_Header">
-                        <ons-row align="center">
-                            <ons-col width="50%">
-                                <div class="Ensei_Headercss Ensei_Area">
-                                    エリア
-                                </div>
-                            </ons-col>
-                            <ons-col>
-                                <div class="Ensei_Headercss">
-                                    旗艦Lv
-                                </div>
-                            </ons-col>
-                            <ons-col>
-                                <div class="Ensei_Headercss">
-                                    隻数
-                                </div>
-                            </ons-col>
-                            <ons-col width="25%">
-                                <div class="Ensei_Headercss">
-                                    必須艦種
-                                </div>
-                            </ons-col>
-                        </ons-row>
-                    </ons-list-header>
-    
-                    <ons-list-item class="Ensei_List" modifier="tappable" onclick="func_DialogEnsei(this);">
-                        <ons-row align="center">
-                            <ons-col width="50%">
-                                <div class="Ensei_Name">
-                                    -
-                                </div>
-                            </ons-col>
-                            <ons-col>
-                                <div class="Ensei_FlagshipLv">
-                                    -
-                                </div>
-                            </ons-col>
-                            <ons-col>
-                                <div class="Ensei_MinNum">
-                                    -
-                                </div>
-                            </ons-col>
-                            <ons-col width="25%">
-                                <div class="Ensei_Necessary">
-                                    -
-                                </div>
-                            </ons-col>
-                        </ons-row>
-                    </ons-list-item>
-                </div>
-
-                <div class="Ensei_Clone">
-                </div>
-            </ons-list>
-        </ons-scroller>
-    </div>
+    <ons-list id="Ensei_Main">
+    </ons-list>
 </ons-page>
-
