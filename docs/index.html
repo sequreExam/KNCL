@@ -1,0 +1,211 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <meta http-equiv="Content-Security-Policy"
+              content="default-src * data:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'" />
+
+        <link rel="stylesheet" href="components/loader.css" />
+        <link rel="stylesheet" href="css/style.css" />
+
+        <script src="components/loader.js"></script>
+
+        <script src="js/Common.js"></script>
+        <script src="js/Database.js"></script>
+        <script src="js/Ensei.js"></script>
+        <script src="js/Kaishu.js"></script>
+        <script src="js/Kansaiki.js"></script>
+        <script src="js/Sentou.js"></script>
+
+        <script>
+            "use strict";
+            //AutoStyling 機能を無効にしたい場合、以下のコードを後述の onseui.js を読み込んだ直後に記述します。
+            ons.disableAutoStyling();
+
+            ons.ready(function()
+            {
+                console.log("ons.ready:");
+                document.addEventListener("init", function(event)
+                {
+                    console.log("init: " + event.target.id);
+
+                    switch(event.target.id)
+                    {
+                        // 艦載機ページ用やで(*'v'*)
+                        case "pageKansaiki":
+                            console.log(" call: func_pageKansaiki();");
+                            //クロージャの準備
+                            var updateKanmusu;
+                            var updateKansaiki;
+                            var updateFleet;
+                            var calculateSeiku;
+                            // セミコロンはいらないです
+                            configFleet()
+                            func_pageKansaiki();
+                            break;
+
+                        // 改修ページ用やで(*'v'*)
+                        case "pageKaishu_Mon":
+                            console.log(" call: func_pageKaishu();");
+                            var indexDate = func_pageKaishu();
+                            func_pageKaishuDay(indexDate)
+                            break;
+
+                        // 戦闘ページ用やで(*'v'*)
+                        // 対空ページ用やで(*'v'*)
+                        case "pageSentou_AA":
+                            console.log(" call: func_pageSentou();");
+                            func_pageSentou();
+                            console.log(" call: func_pageSentou_AA();");
+                            func_pageSentou_AA();
+                            break;
+
+                        // 弾着ページ用やで(*'v'*)
+                        case "pageSentou_OF":
+                            console.log(" call: func_pageSentou_OF();");
+                            func_pageSentou_OF();
+                            break;
+
+                        // 夜戦ページ用やで(*'v'*)
+                        case "pageSentou_NC":
+                            console.log(" call: func_pageSentou_NC();");
+                            func_pageSentou_NC();
+                            break;
+
+                        // 遠征ページ用やで(*'v'*)
+                        case "pageEnsei":
+                            console.log(" call: func_pageEnsei();");
+                            func_pageEnsei();
+                            break;
+
+                        // 謝辞ページ用やで(*'v'*)
+                        case "pageAck":
+                            console.log(" call: func_pageAck();");
+                            //func_pageEnsei2();
+                            break;
+
+                        default:
+                            break;
+                    }
+                }, false);
+
+                // 初期ページを設定
+                KNCLnavigator.pushPage("Main/Main.html");
+            });
+        </script>
+    </head>
+
+    <body>
+        <ons-navigator id="KNCLnavigator">
+        </ons-navigator>
+        
+        <ons-alert-dialog id="Ensei_Alert" cancelable>
+            <div class="alert-dialog-title">
+                <span class="Alert_Ensei_Name">遠征名</span>
+            </div>
+            <div class="alert-dialog-content" style="text-align: left;">
+                遠征時間:<span class="Alert_Ensei_Time">遠征時間</span>
+                <br />
+                旗艦Lv:<span class="Alert_Ensei_FlagshipLv">旗艦Lv</span>
+                隻数:<span class="Alert_Ensei_MinNum">必要隻数</span>隻
+                <br />
+                艦種:<span class="Alert_Ensei_Necessary">必要艦種</span>
+                ドラム缶:<span class="Alert_Ensei_Necessary_Drum">ドラム缶</span>
+                <br />
+                提督経験値:<span class="Alert_Ensei_AdmiralExp">提督経験値</span>
+                艦娘経験値:<span class="Alert_Ensei_KanmusuExp">艦娘経験値</span>
+                <br />
+                <br />
+                獲得資源/資材:
+                <br />
+                燃料:<span class="Alert_Ensei_Fuel">燃料</span>
+                弾薬:<span class="Alert_Ensei_Ammo">弾薬</span>
+                鋼材:<span class="Alert_Ensei_Steel">鋼材</span>
+                ボーキ:<span class="Alert_Ensei_Bauxite">ボーキ</span>
+                <br />
+                報酬1:<span class="Alert_Ensei_Bonus1">報酬1</span>
+                報酬2:<span class="Alert_Ensei_Bonus2">報酬2</span>
+                <br />
+                消費燃料:<span class="Alert_Ensei_ConsumeFuel">消費燃料</span>
+                消費弾薬:<span class="Alert_Ensei_ConsumeAmmo">消費弾薬</span>
+            </div>
+        </ons-alert-dialog>
+
+        <ons-alert-dialog id="Kaishu_Alert" cancelable>
+            <div class="alert-dialog-title">
+                <span class="Alert_Kaishu_Name">装備名</span>
+            </div>
+            <div class="alert-dialog-content" style="text-align: left;">
+                <div class="Alert_Kaishu_Group_Common">
+                    消費資源(燃/弾/鋼/ボ): 
+                        <span class="Alert_Kaishu_ConsumeFuel">消費燃料</span>/
+                        <span class="Alert_Kaishu_ConsumeAmmo">消費弾薬</span>/
+                        <span class="Alert_Kaishu_ConsumeSteel">消費鋼材</span>/
+                        <span class="Alert_Kaishu_ConsumeBauxite">消費ボーキ</span>
+                </div>
+                <div class="Alert_Kaishu_Group_0to5">
+                    <br />
+                    ☆0～☆5
+                    <br />
+                    開発資材(通常/確実化):
+                        <span class="Alert_Kaishu_DevelopNum0">開発資材</span>/ 
+                        <span class="Alert_Kaishu_Develop100Num0">確実化</span>
+                    <br />
+                    改修資材(通常/確実化):
+                        <span class="Alert_Kaishu_ImproveNum0">改修資材</span>/
+                        <span class="Alert_Kaishu_Improve100Num0">確実化</span>
+                    <br />
+                    消費する装備:
+                        <span class="Alert_Kaishu_ConsumeEquip0">装備名</span> x
+                        <span class="Alert_Kaishu_EquipNum0">消費数</span>
+                </div>
+                <div class="Alert_Kaishu_Group_6to9">
+                    <br />
+                    ☆6～☆9
+                    <br />
+                    開発資材(通常/確実化):
+                        <span class="Alert_Kaishu_DevelopNum6">開発資材</span>/
+                        <span class="Alert_Kaishu_Develop100Num6">確実化</span>
+                    <br />
+                    改修資材(通常/確実化):
+                        <span class="Alert_Kaishu_ImproveNum6">改修資材</span>/
+                        <span class="Alert_Kaishu_Improve100Num6">確実化</span>
+                    <br />
+                    消費する装備:
+                        <span class="Alert_Kaishu_ConsumeEquip6">装備名</span> x
+                        <span class="Alert_Kaishu_EquipNum6">消費数</span>
+                </div>
+                <div class="Alert_Kaishu_Group_10">
+                    <br />
+                    ☆10
+                    <br />
+                    開発資材(通常/確実化):
+                        <span class="Alert_Kaishu_DevelopNum10">開発資材</span>/
+                        <span class="Alert_Kaishu_Develop100Num10">確実化</span>
+                    <br />
+                    改修資材(通常/確実化):
+                        <span class="Alert_Kaishu_ImproveNum10">改修資材</span>/
+                        <span class="Alert_Kaishu_Improve100Num10">確実化</span>
+                    <br />
+                    消費する装備:
+                        <span class="Alert_Kaishu_ConsumeEquip10">装備名</span> x
+                        <span class="Alert_Kaishu_EquipNum10">消費数</span>
+                    <br />
+                    改修後の装備:
+                        <span class="Alert_Kaishu_NextEquip">装備名</span>
+                </div>
+                <div class="Alert_Kaishu_Group_Nibankan">
+                    <br />
+                    月曜: <span class="Alert_Kaishu_Monday">月曜日</span><br />
+                    火曜: <span class="Alert_Kaishu_Tuesday">火曜日</span><br />
+                    水曜: <span class="Alert_Kaishu_Wednesday">水曜日</span><br />
+                    木曜: <span class="Alert_Kaishu_Thursday">木曜日</span><br />
+                    金曜: <span class="Alert_Kaishu_Friday">金曜日</span><br />
+                    土曜: <span class="Alert_Kaishu_Saturday">土曜日</span><br />
+                    日曜: <span class="Alert_Kaishu_Sunday">日曜日</span>
+                </div>
+            </div>
+        </ons-alert-dialog>
+    </body>
+</html>

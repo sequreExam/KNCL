@@ -1,0 +1,22 @@
+<ons-page id="pageKansaiki">
+    <ons-toolbar>
+        <div class="left">
+            <ons-back-button id="backtoMain">戻る</ons-back-button></div>
+        <div class="center">
+            艦隊制空値</div>
+        <div class="right">
+            <ons-toolbar-button id="gotoResult"
+             onclick="KNCLnavigator.pushPage('Result/Result.html', {animation: 'lift'})">
+                敵制空値</ons-button></div>
+    </ons-toolbar>
+
+    <ons-list id="Kansaiki_Main">
+        <ons-row>
+            <ons-col>
+                <ons-list-item>
+                    制空値 = <span class="calcSeiku">0</span>
+                </ons-list-item>
+            </ons-col>
+        </ons-row>
+    </ons-list>
+</ons-page>
