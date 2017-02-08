@@ -63,7 +63,7 @@ function func_pageKaishuDay(indexDate)
         //今日の曜日のページを一番に更新したい
         loadingDayIndex = (day + indexDate) % 7;
         loadingIdIndex = "#pageKaishu_" + arrayDayId[loadingDayIndex];
-        //console.log("  loading... " + loadingIdIndex);
+        console.log("  loading... " + loadingIdIndex);
 
         //追加するDOMをリセット
         DOM = "";
