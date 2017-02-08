@@ -1,0 +1,49 @@
+<ons-page id="pageSentou">
+    <ons-tabbar id="tabSentou">
+        <ons-tab label="対空" page="Sentou_AA.html" persistent></ons-tab><!-- Anti-Air -->
+        <ons-tab label="昼戦" page="Sentou_OF.html" persistent></ons-tab><!-- Observed Fire/観測射撃 -->
+        <ons-tab label="夜戦" page="Sentou_NC.html" persistent></ons-tab><!-- Night Combat -->
+    </ons-tabbar>
+
+    <ons-template id="Sentou_AA.html">
+        <ons-page id="pageSentou_AA">
+            <ons-toolbar>
+                <div class="left">
+                    <ons-back-button class="backtoMain">戻る</ons-back-button></div>
+                <div class="center">対空カットイン</div>
+                <div class="right"></div>
+            </ons-toolbar>
+
+            <ons-list id="Sentou_AA_Main">
+            </ons-list>
+        </ons-page>
+    </ons-template>
+
+    <ons-template id="Sentou_OF.html">
+        <ons-page id="pageSentou_OF">
+            <ons-toolbar>
+                <div class="left">
+                    <ons-back-button class="backtoMain">戻る</ons-back-button></div>
+                <div class="center">弾着観測射撃</div>
+                <div class="right"></div>
+            </ons-toolbar>
+
+            <ons-list id="Sentou_OF_Main">
+            </ons-list>
+        </ons-page>
+    </ons-template>
+
+    <ons-template id="Sentou_NC.html">
+        <ons-page id="pageSentou_NC">
+            <ons-toolbar>
+                <div class="left">
+                    <ons-back-button class="backtoMain">戻る</ons-back-button></div>
+                <div class="center">夜間特殊攻撃</div>
+                <div class="right"></div>
+            </ons-toolbar>
+
+            <ons-list id="Sentou_NC_Main">
+            </ons-list>
+        </ons-page>
+    </ons-template>
+</ons-page>

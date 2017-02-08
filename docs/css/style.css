@@ -1,0 +1,109 @@
+/* 公式テーマを書き換えてみるやで */
+.list__item__center
+{
+    padding: 0 6px 0 0;
+}
+
+/* 艦載機ページ用やで */
+[id^=putKanmusu]
+{
+    line-height: 250%;
+}
+[class^=setKanmusuType_], [class^=setKansaikiType_]
+{
+    text-indent: 0.5em;
+}
+[class^=setKanmusuName_], [class^=setKansaiki_]
+{
+    text-indent: 1.0em;
+}
+[class^=setKansaikiMastery_]
+{
+    text-indent: 1.5em;
+}
+.alignKansaiki
+{
+    font-size: 75%;
+    line-height: 25%;
+}
+.alignKansaikiSlot
+{
+    margin: 0px auto;
+	width: 1.5em;
+	display: inline-block;
+	text-align: right;
+}
+.alignKansaikiName
+{
+	margin: 0px auto;
+	display: inline-block;
+}
+.alignKansaikiPlus
+{
+	margin: 0px auto;
+	display: inline-block;
+}
+.alignKansaikiMastery
+{
+	margin: 0px auto;
+	display: inline-block;
+}
+.alignKansaikiFloat
+{
+	float: right;
+}
+label.center
+{
+    font-size: 100%;
+}
+
+/* 改修ページ用やで */
+.Kaishu_Soubi
+{
+    font-size: 90%;
+}
+.Kaishu_Nibankan
+{
+    font-size: 80%;
+    line-height: 100%;
+}
+
+/* 遠征ページ用やで */
+.Ensei_Area
+{
+}
+.Ensei_FlagshipLv, .Ensei_MinNum
+{
+    text-align: center;
+}
+.Ensei_Necessary
+{
+    line-height: 100%;
+    font-size: 80%;
+}
+
+/* 戦闘ページ用やで */
+.Sentou_AA_ShootDown
+{
+    text-align: center;
+}
+.Sentou_AA_Equipment
+{
+    font-size: 80%;
+}
+.Sentou_AA_Equipment
+{
+    line-height: 100%;
+}
+
+.Sentou_OF_EquipmentA, .Sentou_OF_EquipmentB, .Sentou_OF_EquipmentC, .Sentou_OF_EquipmentD, .Sentou_OF_Correction
+{
+    font-size: 80%;
+    text-align: center;
+}
+
+.Sentou_NC_EquipmentA, .Sentou_NC_EquipmentB, .Sentou_NC_EquipmentC, .Sentou_NC_Correction
+{
+    font-size: 80%;
+    text-align: center;
+}
